@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "gate27_prep_plan.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "tracker.js",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/gate27_prep_plan.html"
+    }
+  ]
+}

@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GATE 27 Prep Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e11;
+    --surface: #16161a;
+    --surface2: #1e1e24;
+    --border: rgba(255,255,255,0.07);
+    --text: #f0eff4;
+    --muted: #8b8a99;
+    --accent: #7c6cf0;
+    --accent2: #22d3a0;
+    --accent3: #f0a832;
+    --accent4: #f06060;
+    --accent5: #60b4f0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 72px 20px 80px;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  .hero { margin-bottom: 48px; }
+  .hero-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .hero-title { font-family: 'Syne', sans-serif; font-size: clamp(32px, 6vw, 56px); font-weight: 800; line-height: 1.05; margin-bottom: 16px; }
+  .hero-title span { color: var(--accent); }
+  .hero-sub { font-size: 15px; color: var(--muted); max-width: 560px; line-height: 1.7; }
+
+  /* Target strip */
+  .targets { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 48px; }
+  .target-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .target-card .t-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .target-card .t-val { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; }
+  .target-card .t-desc { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .t-purple .t-val { color: var(--accent); }
+  .t-green .t-val { color: var(--accent2); }
+  .t-amber .t-val { color: var(--accent3); }
+  .t-red .t-val { color: var(--accent4); }
+
+  /* Phase header */
+  .phase { margin-bottom: 40px; }
+  .phase-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+  .phase-num { font-family: 'Syne', sans-serif; font-size: 48px; font-weight: 800; line-height: 1; color: var(--border); width: 56px; flex-shrink: 0; }
+  .phase-meta { flex: 1; }
+  .phase-badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; margin-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .phase-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .phase-dates { font-size: 13px; color: var(--muted); }
+  .phase-goal { font-size: 14px; color: var(--muted); margin-top: 6px; border-left: 2px solid var(--border); padding-left: 12px; }
+
+  /* Month card */
+  .month-grid { display: grid; gap: 12px; }
+  .month-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; position: relative; overflow: hidden; }
+  .month-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+  .phase-1 .month-card::before { background: var(--accent); }
+  .phase-2 .month-card::before { background: var(--accent2); }
+  .phase-3 .month-card::before { background: var(--accent3); }
+  .phase-4 .month-card::before { background: var(--accent4); }
+  .phase-5 .month-card::before { background: var(--accent5); }
+
+  .month-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .month-name { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; }
+  .month-focus { font-size: 12px; color: var(--muted); }
+  .intensity-bar { display: flex; gap: 3px; }
+  .intensity-bar span { width: 8px; height: 8px; border-radius: 2px; background: var(--border); }
+  .intensity-bar span.on { background: var(--accent3); }
+
+  .subjects { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .subj { font-size: 12px; padding: 3px 10px; border-radius: 20px; border: 1px solid var(--border); color: var(--muted); }
+  .subj.primary { background: rgba(124,108,240,0.12); border-color: rgba(124,108,240,0.3); color: #b0a8f8; }
+  .subj.revision { background: rgba(34,211,160,0.08); border-color: rgba(34,211,160,0.25); color: #6ee7c8; }
+  .subj.mock { background: rgba(240,168,50,0.1); border-color: rgba(240,168,50,0.3); color: #f0c870; }
+
+  .tasks { list-style: none; }
+  .tasks li { font-size: 13px; color: var(--muted); padding: 5px 0; display: flex; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .tasks li:last-child { border-bottom: none; }
+  .tasks li::before { content: '→'; color: var(--accent); flex-shrink: 0; font-size: 12px; margin-top: 1px; }
+  .tasks li strong { color: var(--text); font-weight: 500; }
+
+  .month-footer { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .checkpoint { font-size: 11px; padding: 4px 10px; border-radius: 6px; background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+  .checkpoint.key { border-color: rgba(124,108,240,0.4); color: var(--accent); background: rgba(124,108,240,0.08); }
+
+  /* Daily schedule */
+  .daily { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 40px; }
+  .daily-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 16px; }
+  .time-slot { display: flex; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .time-slot:last-child { border-bottom: none; }
+  .time { font-size: 12px; color: var(--accent); font-family: 'Syne', sans-serif; font-weight: 600; min-width: 80px; padding-top: 2px; }
+  .activity { font-size: 13px; color: var(--text); }
+  .activity small { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+
+  /* Subject priority table */
+  .subj-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+  .subj-table th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  .subj-table td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: top; }
+  .subj-table tr:last-child td { border-bottom: none; }
+  .weight { font-family: 'Syne', sans-serif; font-weight: 700; }
+  .w-high { color: var(--accent4); }
+  .w-med { color: var(--accent3); }
+  .w-low { color: var(--accent2); }
+  .diff-bar { display: flex; gap: 2px; }
+  .diff-bar span { width: 10px; height: 4px; border-radius: 2px; background: var(--border); }
+  .diff-bar span.on { background: var(--accent); }
+
+  /* Resources */
+  .resources { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 40px; }
+  .res-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .res-subject { font-size: 12px; color: var(--accent); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .res-item { font-size: 13px; color: var(--muted); padding: 3px 0; }
+  .res-item strong { color: var(--text); font-weight: 500; }
+
+  /* Warning box */
+  .warning { background: rgba(240,96,96,0.07); border: 1px solid rgba(240,96,96,0.2); border-radius: 12px; padding: 18px 20px; margin-bottom: 32px; }
+  .warning-title { font-size: 13px; font-weight: 600; color: var(--accent4); margin-bottom: 8px; }
+  .warning ul { list-style: none; }
+  .warning ul li { font-size: 13px; color: var(--muted); padding: 3px 0; display: flex; gap: 8px; }
+  .warning ul li::before { content: '!'; color: var(--accent4); font-weight: 700; }
+
+  /* Section title */
+  .sec-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .sec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* Phase color badges */
+  .b-purple { background: rgba(124,108,240,0.12); color: #b0a8f8; }
+  .b-green { background: rgba(34,211,160,0.1); color: #6ee7c8; }
+  .b-amber { background: rgba(240,168,50,0.1); color: #f0c870; }
+  .b-red { background: rgba(240,96,96,0.1); color: #f09090; }
+  .b-blue { background: rgba(96,180,240,0.1); color: #90c8f0; }
+
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  /* Countdown */
+  .countdown-strip{display:flex;gap:14px;margin-bottom:36px;align-items:stretch;flex-wrap:wrap}
+  .cd-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 18px;text-align:center;min-width:72px}
+  .cd-val{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--accent)}
+  .cd-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+  .phase-ind{flex:1;min-width:220px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;flex-direction:column;justify-content:center}
+  .phase-ind .pi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+  .phase-ind .pi-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
+  .phase-ind .pi-bar{height:4px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden}
+  .phase-ind .pi-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s}
+
+  /* Progress tracker */
+  .overall-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:16px}
+  .ob-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .ob-pct{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--accent2)}
+  .pbar{height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+  .pfill{height:100%;border-radius:4px;transition:width .4s ease}
+  .pfill-g{background:linear-gradient(90deg,var(--accent2),#34d9a8)}
+  .pfill-p{background:linear-gradient(90deg,var(--accent),#9d8ff8)}
+  .sp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:40px}
+  .sp-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;transition:border-color .2s}
+  .sp-card:hover{border-color:rgba(124,108,240,.3)}
+  .sp-hd{display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-bottom:6px;list-style:none}
+  .sp-hd::-webkit-details-marker { display:none; }
+  .sp-hd .sp-n{font-size:13px;font-weight:600}.sp-hd .sp-p{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--accent)}
+  .sp-topics{margin-top:10px;border-top:1px solid var(--border);padding-top:8px}
+  .sp-topics label{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);padding:3px 0;cursor:pointer}
+  .sp-topics label:hover{color:var(--text)}
+  .sp-topics input[type=checkbox]{accent-color:var(--accent2);width:14px;height:14px;cursor:pointer}
+
+  /* Heatmap */
+  .hm-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:0}
+  .hm-months{display:flex;gap:2px;margin-bottom:6px;padding-left:0}
+  .hm-months span{font-size:10px;color:var(--muted);min-width:14px;text-align:center}
+  .hm-grid{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:14px}
+  .hm-cell{width:14px;height:14px;border-radius:3px;background:var(--surface2);border:1px solid var(--border);cursor:pointer;transition:all .15s;position:relative}
+  .hm-cell:hover{border-color:var(--accent);transform:scale(1.3);z-index:2}
+  .hm-cell.l1{background:rgba(34,211,160,.2);border-color:rgba(34,211,160,.3)}
+  .hm-cell.l2{background:rgba(34,211,160,.4);border-color:rgba(34,211,160,.4)}
+  .hm-cell.l3{background:rgba(34,211,160,.6);border-color:rgba(34,211,160,.5)}
+  .hm-cell.l4{background:rgba(34,211,160,.85);border-color:rgba(34,211,160,.7)}
+  .hm-bot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+  .hm-stats{display:flex;gap:16px}.hm-stat{font-size:12px;color:var(--muted)}
+  .hm-stat strong{color:var(--text);font-family:'Syne',sans-serif}
+  .hm-leg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+  .hm-leg .hm-cell{width:11px;height:11px;cursor:default;pointer-events:none}
+  .hm-input{display:flex;gap:8px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+  .hm-input label{font-size:12px;color:var(--muted)}
+  .ctrl-input{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-size:13px}
+  .ctrl-input:focus{outline:none;border-color:var(--accent)}
+  .ctrl-btn{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .2s;font-family:'DM Sans',sans-serif}
+  .ctrl-btn:hover{opacity:.85}
+  .ctrl-btn.green{background:var(--accent2);color:#0e0e11}
+  .ctrl-btn.red{background:var(--accent4)}
+  .hm-tip{position:fixed;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:5px 9px;font-size:11px;color:var(--text);pointer-events:none;z-index:100;display:none;white-space:nowrap}
+
+  /* Mock tracker */
+  .mock-form{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px}
+  .mf-g{display:flex;flex-direction:column;gap:3px}
+  .mf-g label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .mock-chart{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px}
+  .mock-chart canvas{width:100%;height:200px;display:block}
+  .mock-empty{text-align:center;padding:36px;color:var(--muted);font-size:13px}
+  .mock-hist{max-height:200px;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-radius:12px}
+  .mock-hist table{width:100%;border-collapse:collapse}
+  .mock-hist th{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface)}
+  .mock-hist td{padding:7px 10px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.03)}
+  .score-v{font-family:'Syne',sans-serif;font-weight:700}
+  .del-btn{background:none;border:none;color:var(--accent4);cursor:pointer;font-size:13px;opacity:.5}
+  .del-btn:hover{opacity:1}
+
+  /* PYQ tracker */
+  .pyq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:10px;margin-bottom:40px}
+  .pyq-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px}
+  .pyq-card .pn{font-size:13px;font-weight:600;margin-bottom:6px}
+  .pyq-card .pa{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px}
+  .pyq-card .ps{font-size:11px;color:var(--muted);margin-bottom:8px}
+  .pyq-row{display:flex;gap:6px;align-items:center}
+  .pyq-row input{width:50px;text-align:center}
+  .pyq-row button{font-family:'DM Sans',sans-serif}
+
+  /* Weak topics */
+  .weak-form{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .weak-form input,.weak-form select{flex:1;min-width:120px}
+  .weak-list{display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto}
+  .wk-item{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;animation:fadeIn .3s ease}
+  .wi-left{display:flex;align-items:center;gap:10px}
+  .wi-topic{font-size:13px;font-weight:500}.wi-subj{font-size:11px;color:var(--muted)}
+  .wi-count{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent4);background:rgba(240,96,96,.1);border-radius:6px;padding:2px 8px}
+  .wi-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px}.wi-del:hover{color:var(--accent4)}
+  .weak-empty{text-align:center;padding:28px;color:var(--muted);font-size:13px;background:var(--surface);border:1px solid var(--border);border-radius:12px}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .active-phase{border-color:rgba(124,108,240,.4)!important;box-shadow:0 0 20px rgba(124,108,240,.08)}
+
+  /* Data management bar */
+  .data-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px;margin-bottom:20px;background:var(--surface);border:1px solid var(--border);border-radius:10px;flex-wrap:wrap}
+  .data-bar-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .data-bar-right{font-size:11px;color:var(--muted)}
+  .db-btn{background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:5px}
+  .db-btn:hover{border-color:var(--accent);color:var(--text)}
+  .db-btn.primary{background:rgba(124,108,240,0.12);border-color:rgba(124,108,240,0.3);color:#b0a8f8}
+  .db-btn.primary:hover{background:rgba(124,108,240,0.2);border-color:rgba(124,108,240,0.5)}
+  .db-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+
+  /* Recovery banner */
+  .recovery-banner{display:none;align-items:center;gap:12px;padding:14px 18px;margin-bottom:20px;background:rgba(240,96,96,0.07);border:1px solid rgba(240,96,96,0.25);border-radius:12px;flex-wrap:wrap}
+  .recovery-banner .rb-icon{font-size:22px}
+  .recovery-banner .rb-text{flex:1;min-width:200px}
+  .recovery-banner .rb-title{font-size:13px;font-weight:600;color:var(--accent4);margin-bottom:2px}
+  .recovery-banner .rb-desc{font-size:12px;color:var(--muted)}
+  .recovery-banner .ctrl-btn{font-size:12px;padding:7px 16px}
+
+  /* Top navigation bar */
+  .top-nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#12121a;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;height:52px;backdrop-filter:blur(12px);background:rgba(14,14,17,0.92)}
+  .top-nav .nav-brand{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--accent);margin-right:32px;white-space:nowrap}
+  .top-nav .nav-tabs{display:flex;gap:4px;flex:1;overflow-x:auto}
+  .top-nav .nav-tab{background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:8px 16px;cursor:pointer;border-radius:6px;transition:all .2s;white-space:nowrap;position:relative}
+  .top-nav .nav-tab:hover{color:var(--text);background:rgba(255,255,255,0.04)}
+  .top-nav .nav-tab.active{color:var(--text);background:rgba(124,108,240,0.1)}
+  .top-nav .nav-tab.active::after{content:'';position:absolute;bottom:-1px;left:12px;right:12px;height:2px;background:var(--accent);border-radius:1px}
+  .top-nav .nav-backup{font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap;display:flex;align-items:center;gap:6px}
+
+  /* Page sections */
+  .page-section{display:none;animation:fadeIn .3s ease}
+  .page-section.active{display:block}
+
+  /* Full Syllabus page */
+  .syllabus-full{margin-bottom:40px}
+  .syllabus-section{margin-bottom:32px}
+  .syllabus-section-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--accent);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  .syllabus-content{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 22px}
+  .syllabus-content h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin:16px 0 8px}
+  .syllabus-content h3:first-child{margin-top:0}
+  .syllabus-content p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:4px}
+  .syllabus-badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle}
+  .syllabus-badge.math{background:rgba(124,108,240,0.12);color:#b0a8f8}
+  .syllabus-badge.core{background:rgba(34,211,160,0.1);color:#6ee7c8}
+  .syllabus-badge.ga{background:rgba(240,168,50,0.1);color:#f0c870}
+
+  @media (max-width: 600px) {
+    body { padding: 60px 14px 60px; }
+    .phase-num { font-size: 36px; width: 44px; }
+    .subj-table { font-size: 12px; }
+    .subj-table th, .subj-table td { padding: 7px 8px; }
+    .countdown-strip{gap:8px}.cd-item{min-width:60px;padding:10px 12px}.cd-val{font-size:24px}
+    .sp-grid{grid-template-columns:1fr}.pyq-grid{grid-template-columns:1fr 1fr}
+    .data-bar{flex-direction:column;align-items:flex-start}
+    .top-nav .nav-brand{font-size:13px;margin-right:16px}
+    .top-nav .nav-tab{font-size:12px;padding:6px 10px}
+    .top-nav .nav-backup{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Navigation Bar -->
+<nav class="top-nav">
+  <div class="nav-brand">GATE 2027</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('dashboard')">Dashboard</button>
+    <button class="nav-tab" onclick="showPage('studyplan')">Study Plan</button>
+    <button class="nav-tab" onclick="showPage('analytics')">Analytics</button>
+    <button class="nav-tab" onclick="showPage('syllabus')">Full Syllabus</button>
+    <button class="nav-tab" onclick="showPage('resources')">Resources</button>
+  </div>
+  <div class="nav-backup" id="nav-backup-status"></div>
+</nav>
+
+<!-- Data management bar -->
+<div class="data-bar" id="data-bar">
+  <div class="data-bar-left">
+    <span class="db-label">💾 Data</span>
+    <button class="db-btn primary" onclick="connectBackupFile()" title="Connect a backup file for auto-saving">⚡ Auto-Backup</button>
+    <button class="db-btn" onclick="exportDataDownload()" title="Download a backup file">↓ Export</button>
+    <button class="db-btn" onclick="importData()" title="Restore from a backup file">↑ Import</button>
+  </div>
+  <div class="data-bar-right" id="backup-status">○ No backup connected</div>
+</div>
+
+<!-- Recovery banner (shown only when localStorage was wiped) -->
+<div class="recovery-banner" id="recovery-banner">
+  <div class="rb-icon">⚠️</div>
+  <div class="rb-text">
+    <div class="rb-title">Your progress data was lost</div>
+    <div class="rb-desc">Browser cache was probably cleared. If you have a backup file (gate27_backup.json), click Import to restore your data.</div>
+  </div>
+  <button class="ctrl-btn" onclick="importData()">📂 Import Backup</button>
+</div>
+
+<section id="page-dashboard" class="page-section active">
+<div class="hero">
+  <div class="hero-label">Personal prep plan · GATE 2027 CS</div>
+  <h1 class="hero-title">The road to<br><span>75 marks</span></h1>
+  <p class="hero-sub">OBC-NCL · Full-time prep · Starting June 2026 · Target February 2027. Built around your baseline of ~25 marks with strong aptitude and DSA, weak on core theory subjects.</p>
+</div>
+
+<!-- Countdown -->
+<div class="countdown-strip" id="countdown">
+  <div class="cd-item"><div class="cd-val" id="cd-days">--</div><div class="cd-label">Days</div></div>
+  <div class="cd-item"><div class="cd-val" id="cd-hrs">--</div><div class="cd-label">Hours</div></div>
+  <div class="cd-item"><div class="cd-val" id="cd-min">--</div><div class="cd-label">Min</div></div>
+  <div class="cd-item"><div class="cd-val" id="cd-sec">--</div><div class="cd-label">Sec</div></div>
+  <div class="phase-ind" id="phase-ind">
+    <div class="pi-label">Current phase</div>
+    <div class="pi-name" id="pi-name">Loading...</div>
+    <div class="pi-bar"><div class="pi-fill" id="pi-fill" style="width:0%"></div></div>
+  </div>
+</div>
+
+<!-- Targets -->
+<div class="targets">
+  <div class="target-card t-purple">
+    <div class="t-label">Current baseline</div>
+    <div class="t-val">~25</div>
+    <div class="t-desc">marks (aptitude + DSA only)</div>
+  </div>
+  <div class="target-card t-green">
+    <div class="t-label">Floor target</div>
+    <div class="t-val">60</div>
+    <div class="t-desc">Tier 2 IITs guaranteed</div>
+  </div>
+  <div class="target-card t-amber">
+    <div class="t-label">Primary goal</div>
+    <div class="t-val">65</div>
+    <div class="t-desc">Tier 1 IITs within reach</div>
+  </div>
+  <div class="target-card t-red">
+    <div class="t-label">Stretch goal</div>
+    <div class="t-val">75+</div>
+    <div class="t-desc">IIT Bombay / Delhi / Kanpur</div>
+  </div>
+</div>
+
+<!-- Progress tracker -->
+<div class="sec-title">Syllabus progress tracker</div>
+<div class="overall-bar">
+  <div class="ob-top"><span style="font-size:13px;color:var(--muted)">Overall completion</span><span class="ob-pct" id="overall-pct">0%</span></div>
+  <div class="pbar"><div class="pfill pfill-g" id="overall-fill" style="width:0%"></div></div>
+</div>
+<div class="sp-grid" id="sp-grid"></div>
+
+</section>
+
+<section id="page-studyplan" class="page-section">
+
+<!-- Subject priority table -->
+<div class="sec-title">Subject priority map</div>
+<table class="subj-table">
+  <thead>
+    <tr>
+      <th>Subject</th>
+      <th>GATE Weightage</th>
+      <th>Your current state</th>
+      <th>Difficulty</th>
+      <th>Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>General Aptitude</strong></td>
+      <td><span class="weight w-med">15 marks</span></td>
+      <td>Strong baseline</td>
+      <td><div class="diff-bar"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div></td>
+      <td style="color:#6ee7c8">Maintain + perfect</td>
+    </tr>
+    <tr>
+      <td><strong>DSA + Algorithms</strong></td>
+      <td><span class="weight w-high">12–15 marks</span></td>
+      <td>Your biggest strength</td>
+      <td><div class="diff-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div></td>
+      <td style="color:#6ee7c8">Sharpen, don't neglect</td>
+    </tr>
+    <tr>
+      <td><strong>Discrete Mathematics</strong></td>
+      <td><span class="weight w-high">10–12 marks</span></td>
+      <td>Schema exists, rusty</td>
+      <td><div class="diff-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div></td>
+      <td style="color:#f09090">Start early — high return</td>
+    </tr>
+    <tr>
+      <td><strong>Operating Systems</strong></td>
+      <td><span class="weight w-high">8–10 marks</span></td>
+      <td>Knows topics, forgot details</td>
+      <td><div class="diff-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div></td>
+      <td style="color:#f09090">Conceptual — revives fast</td>
+    </tr>
+    <tr>
+      <td><strong>DBMS</strong></td>
+      <td><span class="weight w-med">8–10 marks</span></td>
+      <td>Knows topics, forgot details</td>
+      <td><div class="diff-bar"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div></td>
+      <td style="color:#f09090">SQL + normalization = marks</td>
+    </tr>
+    <tr>
+      <td><strong>Computer Networks</strong></td>
+      <td><span class="weight w-med">8–10 marks</span></td>
+      <td>Knows topics, forgot details</td>
+      <td><div class="diff-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div></td>
+      <td style="color:#f0c870">Formula-heavy, pattern-based</td>
+    </tr>
+    <tr>
+      <td><strong>Computer Organisation (COA)</strong></td>
+      <td><span class="weight w-med">7–9 marks</span></td>
+      <td>Knows topics, forgot details</td>
+      <td><div class="diff-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div></td>
+      <td style="color:#f0c870">Numerical practice key</td>
+    </tr>
+    <tr>
+      <td><strong>Theory of Computation (TOC)</strong></td>
+      <td><span class="weight w-med">6–8 marks</span></td>
+      <td>Knows topic, needs deep work</td>
+      <td><div class="diff-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div></td>
+      <td style="color:#f09090">Hardest — start early</td>
+    </tr>
+    <tr>
+      <td><strong>Compiler Design</strong></td>
+      <td><span class="weight w-low">5–7 marks</span></td>
+      <td>Knows topic, needs work</td>
+      <td><div class="diff-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div></td>
+      <td style="color:#f0c870">Pair with TOC</td>
+    </tr>
+    <tr>
+      <td><strong>Linear Algebra + Probability</strong></td>
+      <td><span class="weight w-med">8–10 marks</span></td>
+      <td>Needs revival</td>
+      <td><div class="diff-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div></td>
+      <td style="color:#f09090">High marks, do early</td>
+    </tr>
+    <tr>
+      <td><strong>Programming / C concepts</strong></td>
+      <td><span class="weight w-low">3–5 marks</span></td>
+      <td>Reasonably intact</td>
+      <td><div class="diff-bar"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div></td>
+      <td style="color:#6ee7c8">Quick revision only</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="divider"></div>
+
+<!-- Daily schedule -->
+<div class="sec-title">Your daily structure</div>
+<div class="daily">
+  <div class="daily-title">Recommended daily schedule (full-time prep)</div>
+  <div class="time-slot">
+    <div class="time">7:00–7:30</div>
+    <div class="activity">Wake up + light physical activity
+      <small>Don't skip this. 20 min walk or stretching — protects focus for the rest of the day.</small>
+    </div>
+  </div>
+  <div class="time-slot">
+    <div class="time">7:30–8:30</div>
+    <div class="activity">Previous day revision
+      <small>Re-read notes, re-solve 2–3 problems from yesterday. Spaced repetition is real.</small>
+    </div>
+  </div>
+  <div class="time-slot">
+    <div class="time">9:00–12:00</div>
+    <div class="activity"><strong>Deep study block 1</strong> — Primary subject
+      <small>Hardest topic of the day goes here. Full focus, phone away, no music.</small>
+    </div>
+  </div>
+  <div class="time-slot">
+    <div class="time">12:00–1:30</div>
+    <div class="activity">Lunch + rest
+      <small>Actual rest. Not scrolling. 20 min nap if needed — improves afternoon retention.</small>
+    </div>
+  </div>
+  <div class="time-slot">
+    <div class="time">1:30–4:30</div>
+    <div class="activity"><strong>Deep study block 2</strong> — Same or secondary subject
+      <small>Continue primary subject or switch to secondary. Problem solving focus.</small>
+    </div>
+  </div>
+  <div class="time-slot">
+    <div class="time">4:30–5:30</div>
+    <div class="activity">Break — do something you enjoy
+      <small>Walk, music, game, call a friend. Non-negotiable recovery time.</small>
+    </div>
+  </div>
+  <div class="time-slot">
+    <div class="time">5:30–7:30</div>
+    <div class="activity"><strong>Practice block</strong> — Previous year questions
+      <small>Subject-wise PYQs only. At least 20–25 questions. Track what you got wrong.</small>
+    </div>
+  </div>
+  <div class="time-slot">
+    <div class="time">7:30–8:30</div>
+    <div class="activity">Aptitude practice + light revision
+      <small>10–15 aptitude questions daily (never skip). Light notes review for tomorrow.</small>
+    </div>
+  </div>
+  <div class="time-slot">
+    <div class="time">9:00–10:00</div>
+    <div class="activity">Note-making + next day planning
+      <small>Consolidate what you studied. Write 5 things you learned. Plan tomorrow's targets.</small>
+    </div>
+  </div>
+</div>
+
+<!-- Study heatmap -->
+<div class="sec-title">Study streak</div>
+<div class="hm-wrap">
+  <div class="hm-grid" id="hm-grid"></div>
+  <div class="hm-bot">
+    <div class="hm-stats">
+      <div class="hm-stat">Current streak: <strong id="hm-streak">0</strong> days</div>
+      <div class="hm-stat">Total hours: <strong id="hm-total">0</strong></div>
+    </div>
+    <div class="hm-leg">Less <div class="hm-cell"></div><div class="hm-cell l1"></div><div class="hm-cell l2"></div><div class="hm-cell l3"></div><div class="hm-cell l4"></div> More</div>
+  </div>
+  <div class="hm-input">
+    <label>Log today's hours:</label>
+    <input type="number" id="hm-hrs" class="ctrl-input" min="0" max="16" step="0.5" style="width:60px" placeholder="0">
+    <button class="ctrl-btn green" onclick="logHours()">Log</button>
+  </div>
+</div>
+<div class="hm-tip" id="hm-tip"></div>
+
+<div class="divider"></div>
+
+<!-- Month by month -->
+<div class="sec-title">Month-by-month plan</div>
+
+<!-- Phase 1 -->
+<div class="phase phase-1">
+  <div class="phase-header">
+    <div class="phase-num">01</div>
+    <div class="phase-meta">
+      <span class="phase-badge b-purple">Phase 1 — Foundation</span>
+      <div class="phase-title">June – July 2026</div>
+      <div class="phase-dates">Months 1 & 2 · ~8 weeks</div>
+      <div class="phase-goal">Goal: Rebuild the mathematical and logical foundation. Start the subjects that need the most time. Lock your daily routine.</div>
+    </div>
+  </div>
+
+  <div class="month-grid">
+    <div class="month-card">
+      <div class="month-top">
+        <div>
+          <div class="month-name">June 2026</div>
+          <div class="month-focus">Routine + Maths + Discrete</div>
+        </div>
+        <div class="intensity-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      </div>
+      <div class="subjects">
+        <span class="subj primary">Discrete Mathematics</span>
+        <span class="subj primary">Linear Algebra</span>
+        <span class="subj revision">General Aptitude</span>
+      </div>
+      <ul class="tasks">
+        <li><div><strong>Week 1:</strong> Lock your daily schedule. Don't try to study — just build the habit of sitting down at fixed times. 3–4 hrs is fine this week.</div></li>
+        <li><div><strong>Discrete Maths:</strong> Start with Set Theory, Relations, Functions, Propositional Logic. These are the easiest topics and give early confidence. Go through GATE PYQs from 2015–2025 for each topic as you finish it.</div></li>
+        <li><div><strong>Linear Algebra:</strong> Matrices, determinants, eigenvalues, rank. Use Gilbert Strang's lectures or Goclasses. Practice 15–20 numericals daily — this is a marks-heavy topic that most people delay.</div></li>
+        <li><div><strong>Aptitude:</strong> 15 questions daily minimum. Verbal + quant both. Never skip this — it's your free marks insurance.</div></li>
+        <li><div><strong>End of June target:</strong> Finish Discrete Maths (sets, logic, relations, functions, graph theory basics) + Linear Algebra. Solve all PYQs for these topics.</div></li>
+      </ul>
+      <div class="month-footer">
+        <span class="checkpoint key">Lock daily routine</span>
+        <span class="checkpoint">Discrete maths PYQs done</span>
+        <span class="checkpoint">Linear algebra numericals</span>
+      </div>
+    </div>
+
+    <div class="month-card">
+      <div class="month-top">
+        <div>
+          <div class="month-name">July 2026</div>
+          <div class="month-focus">Discrete (finish) + TOC begins + Probability</div>
+        </div>
+        <div class="intensity-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      </div>
+      <div class="subjects">
+        <span class="subj primary">TOC</span>
+        <span class="subj primary">Probability & Stats</span>
+        <span class="subj revision">Discrete Maths</span>
+        <span class="subj revision">Aptitude</span>
+      </div>
+      <ul class="tasks">
+        <li><div><strong>TOC — start early, go slow:</strong> Regular languages, DFA, NFA, minimization, regular expressions. This topic needs weeks of exposure — don't try to rush it. 1.5 hrs/day is enough to start.</div></li>
+        <li><div><strong>Probability:</strong> Bayes theorem, conditional probability, distributions (Poisson, Binomial, Normal basics), expectation. These questions appear every year and are very scorable.</div></li>
+        <li><div><strong>Discrete (finish):</strong> Graph theory (BFS/DFS on graphs, trees, spanning trees, Euler/Hamiltonian), Combinatorics, Recurrence relations. These are harder — take your time.</div></li>
+        <li><div><strong>First mini-mock:</strong> Take a 30-question subject test on Discrete + Maths at end of July. Diagnose weak spots.</div></li>
+        <li><div><strong>Corporate exams:</strong> Parallel prep is fine this month. Don't let it eat more than 1.5 hrs/day of GATE time.</div></li>
+      </ul>
+      <div class="month-footer">
+        <span class="checkpoint key">TOC started (Regular languages done)</span>
+        <span class="checkpoint">Probability finished</span>
+        <span class="checkpoint key">First mini-mock taken</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Phase 2 -->
+<div class="phase phase-2">
+  <div class="phase-header">
+    <div class="phase-num">02</div>
+    <div class="phase-meta">
+      <span class="phase-badge b-green">Phase 2 — Core Subjects</span>
+      <div class="phase-title">August – September 2026</div>
+      <div class="phase-dates">Months 3 & 4 · ~8 weeks</div>
+      <div class="phase-goal">Goal: Cover OS, DBMS, Networks and finish TOC. These are your biggest unexplored mark sources. Heavy lifting phase.</div>
+    </div>
+  </div>
+
+  <div class="month-grid">
+    <div class="month-card">
+      <div class="month-top">
+        <div>
+          <div class="month-name">August 2026</div>
+          <div class="month-focus">OS + TOC (CFL, PDA)</div>
+        </div>
+        <div class="intensity-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      </div>
+      <div class="subjects">
+        <span class="subj primary">Operating Systems</span>
+        <span class="subj primary">TOC continued</span>
+        <span class="subj revision">DSA touch-up</span>
+        <span class="subj revision">Aptitude daily</span>
+      </div>
+      <ul class="tasks">
+        <li><div><strong>OS:</strong> Processes & threads, CPU scheduling (all algorithms + numericals), memory management (paging, segmentation, page replacement), deadlocks, file systems. This subject revives fast — 3–4 weeks is enough for a solid base. Galvin textbook or Goclasses OS is the reference.</div></li>
+        <li><div><strong>OS numericals:</strong> Scheduling (Gantt charts, turnaround time, waiting time), page replacement (FIFO, LRU, Optimal), banker's algorithm — these appear every single year. Practice 10+ numericals per topic.</div></li>
+        <li><div><strong>TOC continued:</strong> Context-free grammars, PDAs, CYK algorithm, ambiguity. This is where TOC gets harder — don't rush, understand each concept before moving on.</div></li>
+        <li><div><strong>DSA:</strong> Don't fully drop it. 3–4 PYQ problems every 2 days to keep it warm. Focus on trees and graphs — most tested.</div></li>
+      </ul>
+      <div class="month-footer">
+        <span class="checkpoint key">OS fully covered</span>
+        <span class="checkpoint">OS numericals practiced</span>
+        <span class="checkpoint">TOC up to CFL done</span>
+      </div>
+    </div>
+
+    <div class="month-card">
+      <div class="month-top">
+        <div>
+          <div class="month-name">September 2026</div>
+          <div class="month-focus">DBMS + TOC (finish) + Networks begins</div>
+        </div>
+        <div class="intensity-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+      </div>
+      <div class="subjects">
+        <span class="subj primary">DBMS</span>
+        <span class="subj primary">TOC — Turing machines</span>
+        <span class="subj primary">Networks intro</span>
+        <span class="subj revision">OS revision</span>
+      </div>
+      <ul class="tasks">
+        <li><div><strong>DBMS:</strong> ER diagrams, relational model, SQL (joins, nested queries, aggregation), normalization (1NF to BCNF), transactions (ACID, serializability, concurrency control), indexing (B+ trees). This is very scorable — 3 weeks is enough. Do Ravindrababu Ravula's DBMS or Goclasses.</div></li>
+        <li><div><strong>DBMS PYQs:</strong> SQL query tracing and normalization questions repeat patterns every year. After each topic, solve ALL PYQs for that topic before moving on.</div></li>
+        <li><div><strong>TOC finish:</strong> Turing machines, decidability, reducibility, P vs NP. This is the hardest part of TOC — give it proper time. 2 weeks minimum. Don't memorize — understand what each class means.</div></li>
+        <li><div><strong>Networks:</strong> Start with OSI model, TCP/IP, data link layer (framing, error detection, MAC). Just introduction this month — Networks gets its dedicated time in October.</div></li>
+        <li><div><strong>Subject-wise mock:</strong> Take a full OS + DBMS test (25–30 questions) end of September. This is your first real assessment.</div></li>
+      </ul>
+      <div class="month-footer">
+        <span class="checkpoint key">DBMS fully covered + PYQs done</span>
+        <span class="checkpoint key">TOC fully finished</span>
+        <span class="checkpoint key">OS + DBMS mock taken</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Phase 3 -->
+<div class="phase phase-3">
+  <div class="phase-header">
+    <div class="phase-num">03</div>
+    <div class="phase-meta">
+      <span class="phase-badge b-amber">Phase 3 — Complete Coverage</span>
+      <div class="phase-title">October – November 2026</div>
+      <div class="phase-dates">Months 5 & 6 · ~8 weeks</div>
+      <div class="phase-goal">Goal: Finish Networks, COA, Compiler Design. Complete the entire syllabus. Begin full-length mocks.</div>
+    </div>
+  </div>
+
+  <div class="month-grid">
+    <div class="month-card">
+      <div class="month-top">
+        <div>
+          <div class="month-name">October 2026</div>
+          <div class="month-focus">Networks (full) + COA</div>
+        </div>
+        <div class="intensity-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+      </div>
+      <div class="subjects">
+        <span class="subj primary">Computer Networks</span>
+        <span class="subj primary">COA</span>
+        <span class="subj revision">DBMS revision</span>
+        <span class="subj mock">First full mock</span>
+      </div>
+      <ul class="tasks">
+        <li><div><strong>Networks:</strong> Physical + data link (error detection CRC, sliding window protocols, CSMA), network layer (IP addressing, subnetting, routing algorithms — Dijkstra, Bellman-Ford), transport layer (TCP vs UDP, congestion control, flow control), application layer (DNS, HTTP, FTP). Heavy on numericals — subnetting and sliding window are must-practice.</div></li>
+        <li><div><strong>COA:</strong> Number systems, boolean algebra, combinational + sequential circuits, CPU organization (pipelining — this is critical, very frequently tested), memory hierarchy (cache — direct mapped, set associative, fully associative), I/O. Pipeline numericals and cache numericals appear almost every year.</div></li>
+        <li><div><strong>First full mock:</strong> Take your first complete GATE mock (100 marks, 3 hours) in the last week of October. Don't panic at the score — it's a diagnostic. Analyze every wrong answer.</div></li>
+        <li><div><strong>Revision habit:</strong> By now you have 5+ subjects covered. Spend 30 min/day on rotating revision of older subjects so they don't go cold.</div></li>
+      </ul>
+      <div class="month-footer">
+        <span class="checkpoint key">Networks complete</span>
+        <span class="checkpoint key">COA complete</span>
+        <span class="checkpoint key">First full mock taken + analyzed</span>
+      </div>
+    </div>
+
+    <div class="month-card">
+      <div class="month-top">
+        <div>
+          <div class="month-name">November 2026</div>
+          <div class="month-focus">Compiler Design + syllabus completion + mock cadence</div>
+        </div>
+        <div class="intensity-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+      </div>
+      <div class="subjects">
+        <span class="subj primary">Compiler Design</span>
+        <span class="subj revision">All subjects rotating</span>
+        <span class="subj mock">2 full mocks</span>
+      </div>
+      <ul class="tasks">
+        <li><div><strong>Compiler Design:</strong> Lexical analysis, parsing (LL, LR, SLR, LALR — know the differences and limitations), syntax directed translation, intermediate code generation, code optimization basics. This pairs well with TOC — same formal language thinking. 2.5 weeks is enough.</div></li>
+        <li><div><strong>Compiler PYQs:</strong> Parsing questions are the most frequent — first/follow sets, parsing table construction. Practice these until they feel mechanical.</div></li>
+        <li><div><strong>Syllabus complete checkpoint:</strong> By end of November every subject should have been covered at least once. This is critical — entering December without full coverage is a red flag.</div></li>
+        <li><div><strong>Mock cadence:</strong> 2 full mocks this month. After each mock — spend as much time analyzing as you did taking it. Wrong answers and lucky correct guesses both need investigation.</div></li>
+        <li><div><strong>Weak subject audit:</strong> After 2 mocks, you'll know which 2–3 subjects are consistently letting you down. Make a list — that becomes December's priority.</div></li>
+      </ul>
+      <div class="month-footer">
+        <span class="checkpoint key">Entire syllabus covered ✓</span>
+        <span class="checkpoint">Compiler design done</span>
+        <span class="checkpoint key">2 mocks taken + analyzed</span>
+        <span class="checkpoint key">Weak subject list ready</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Phase 4 -->
+<div class="phase phase-4">
+  <div class="phase-header">
+    <div class="phase-num">04</div>
+    <div class="phase-meta">
+      <span class="phase-badge b-red">Phase 4 — Intensive Revision</span>
+      <div class="phase-title">December 2026 – January 2027</div>
+      <div class="phase-dates">Months 7 & 8 · ~8 weeks</div>
+      <div class="phase-goal">Goal: Full revision of all subjects, mock every week, close weak subject gaps. Get your score consistently above 45 in mocks.</div>
+    </div>
+  </div>
+
+  <div class="month-grid">
+    <div class="month-card">
+      <div class="month-top">
+        <div>
+          <div class="month-name">December 2026</div>
+          <div class="month-focus">Targeted revision + weekly mocks</div>
+        </div>
+        <div class="intensity-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+      </div>
+      <div class="subjects">
+        <span class="subj revision">All subjects</span>
+        <span class="subj mock">Weekly full mocks</span>
+        <span class="subj primary">Weak subjects targeted</span>
+      </div>
+      <ul class="tasks">
+        <li><div><strong>Revision strategy:</strong> Don't re-read notes from scratch. Go directly to PYQs for each subject — what you can't solve shows you what to re-study. Much faster than passive re-reading.</div></li>
+        <li><div><strong>Weekly mocks:</strong> One full mock every Sunday. Analyze Monday morning — categorize errors as (a) concept gap, (b) silly mistake, (c) time pressure. Each needs a different fix.</div></li>
+        <li><div><strong>Weak subjects:</strong> Dedicate 2 hrs/day to your identified 2–3 weak areas. Don't spread time equally — fix the leaks.</div></li>
+        <li><div><strong>PYQ bank:</strong> By December, you should be solving GATE PYQs from 2010–2025 for every subject. Track your accuracy per subject. Target 70%+ accuracy in strong subjects, 55%+ in weak ones.</div></li>
+        <li><div><strong>Score target by end of December:</strong> Consistently 38–43 marks in full mocks. If you're hitting this, you're on track.</div></li>
+        <li><div><strong>Mental health check:</strong> December is when prep fatigue peaks. Keep your daily break time sacred. One full day off per week — not optional.</div></li>
+      </ul>
+      <div class="month-footer">
+        <span class="checkpoint key">4 full mocks taken</span>
+        <span class="checkpoint">Mock score 38–43 range</span>
+        <span class="checkpoint">PYQ 2010–2025 all subjects</span>
+      </div>
+    </div>
+
+    <div class="month-card">
+      <div class="month-top">
+        <div>
+          <div class="month-name">January 2027</div>
+          <div class="month-focus">Final revision + mock peak + stabilization</div>
+        </div>
+        <div class="intensity-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+      </div>
+      <div class="subjects">
+        <span class="subj revision">All subjects — final sweep</span>
+        <span class="subj mock">2 mocks per week</span>
+      </div>
+      <ul class="tasks">
+        <li><div><strong>First 3 weeks:</strong> 2 mocks per week. One on Wednesday, one on Sunday. This builds exam-day stamina — 3 hours of sustained concentration is a skill you need to practice.</div></li>
+        <li><div><strong>Final subject sweep:</strong> Quick but complete pass through all subjects using your own short notes. If you don't have short notes by now, make them this month — 1 page per subject covering formulas, key concepts, tricky points.</div></li>
+        <li><div><strong>Last week of January:</strong> Stop taking full mocks. Switch to subject-wise 30-min tests only. Your brain needs to consolidate, not absorb new patterns.</div></li>
+        <li><div><strong>Score target by mid-January:</strong> Consistently 45–52 marks in full mocks. This is your real exam performance predictor.</div></li>
+        <li><div><strong>Logistics:</strong> Admit card, exam center location, travel plan — sort all of this in January, not last minute.</div></li>
+        <li><div><strong>Confidence calibration:</strong> You will hit bad mocks. A 38 after a 48 is normal — don't spiral. Track your average over 5 mocks, not individual scores.</div></li>
+      </ul>
+      <div class="month-footer">
+        <span class="checkpoint key">Mock score consistently 45–52</span>
+        <span class="checkpoint">Short notes for all subjects done</span>
+        <span class="checkpoint key">Admit card + logistics sorted</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Phase 5 -->
+<div class="phase phase-5">
+  <div class="phase-header">
+    <div class="phase-num">05</div>
+    <div class="phase-meta">
+      <span class="phase-badge b-blue">Phase 5 — Exam Week</span>
+      <div class="phase-title">February 2027</div>
+      <div class="phase-dates">Final 2 weeks · Pre-exam and exam day</div>
+      <div class="phase-goal">Goal: Preserve what you've built. Don't try to learn new things. Stay sharp, stay calm.</div>
+    </div>
+  </div>
+
+  <div class="month-grid">
+    <div class="month-card">
+      <div class="month-top">
+        <div>
+          <div class="month-name">Feb Week 1 — Wind down</div>
+          <div class="month-focus">Light revision only</div>
+        </div>
+        <div class="intensity-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      </div>
+      <ul class="tasks">
+        <li><div>Only look at your short notes — no new material, no new PYQs you haven't seen before.</div></li>
+        <li><div>One half-length mock (50 marks, 90 min) to keep your brain in exam mode — not a full 3-hour one.</div></li>
+        <li><div>Sleep 8 hours minimum. This week your brain is consolidating everything you've studied — sleep is literally the study.</div></li>
+        <li><div>Eat normally, stay hydrated, no junk food spikes. Sounds small — matters on exam day.</div></li>
+        <li><div>Visualize the exam hall, the interface, the first 30 minutes — mental rehearsal reduces anxiety.</div></li>
+      </ul>
+    </div>
+
+    <div class="month-card">
+      <div class="month-top">
+        <div>
+          <div class="month-name">Exam day strategy</div>
+          <div class="month-focus">Execute, don't perform</div>
+        </div>
+        <div class="intensity-bar"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+      </div>
+      <ul class="tasks">
+        <li><div><strong>First 10 min:</strong> Read the full paper quickly. Mark questions as (a) do now, (b) do later, (c) skip. Don't start solving yet.</div></li>
+        <li><div><strong>Order:</strong> Aptitude first (15 marks, easy win), then your strong subjects (DSA, Discrete, subjects you know cold), then medium, leave the hardest for last.</div></li>
+        <li><div><strong>1-mark questions:</strong> Don't spend more than 90 seconds on any 1-mark question. Move on.</div></li>
+        <li><div><strong>2-mark questions:</strong> Max 4–5 minutes per question. If stuck, mark and come back.</div></li>
+        <li><div><strong>Negative marking:</strong> Only guess if you can eliminate 2 options confidently. Random guessing on 2-mark questions costs 0.67 marks — not worth it.</div></li>
+        <li><div><strong>Last 20 min:</strong> Review marked questions. Don't second-guess answers you were confident about — change only if you spot a clear error.</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</section>
+
+<section id="page-analytics" class="page-section">
+
+<!-- Mock score tracker -->
+<div class="sec-title">Mock score tracker</div>
+<div class="mock-form" id="mock-form">
+  <div class="mf-g"><label>Date</label><input type="date" id="mk-date" class="ctrl-input"></div>
+  <div class="mf-g"><label>Score</label><input type="number" id="mk-score" class="ctrl-input" style="width:65px" min="0" max="100" placeholder="0"></div>
+  <div class="mf-g"><label>Out of</label><input type="number" id="mk-total" class="ctrl-input" style="width:65px" value="100"></div>
+  <div class="mf-g"><label>Type</label><select id="mk-type" class="ctrl-input"><option>Full Mock</option><option>Subject Test</option><option>PYQ Paper</option></select></div>
+  <div class="mf-g"><label>&nbsp;</label><button class="ctrl-btn" onclick="addMock()">Add Score</button></div>
+</div>
+<div class="mock-chart" id="mock-chart-wrap"><canvas id="mock-canvas"></canvas></div>
+<div class="mock-hist" id="mock-hist"></div>
+
+<div class="divider"></div>
+
+<!-- PYQ accuracy tracker -->
+<div class="sec-title">PYQ accuracy dashboard</div>
+<div class="pyq-grid" id="pyq-grid"></div>
+
+<div class="divider"></div>
+
+<!-- Weak topics journal -->
+<div class="sec-title">Weak topics journal</div>
+<div class="weak-form">
+  <input type="text" id="wk-topic" class="ctrl-input" placeholder="Topic name (e.g. Page Replacement)">
+  <select id="wk-subj" class="ctrl-input"></select>
+  <button class="ctrl-btn red" onclick="addWeak()">+ Add</button>
+</div>
+<div id="weak-list"></div>
+
+</section>
+
+<section id="page-syllabus" class="page-section">
+<div class="sec-title">Official GATE CS + GA Syllabus</div>
+<p style="font-size:13px;color:var(--muted);margin-bottom:24px">Complete syllabus from the official GATE 2026 brochure (IIT Guwahati). Covers all 10 CS sections + General Aptitude.</p>
+
+<div class="syllabus-full">
+
+<div class="syllabus-section">
+<div class="syllabus-section-title">Section 1: Engineering Mathematics <span class="syllabus-badge math">Mathematics</span></div>
+<div class="syllabus-content">
+<h3>Discrete Mathematics</h3>
+<p>Propositional and first order logic. Sets, relations, functions, partial orders and lattices. Monoids, Groups. Graphs: connectivity, matching, colouring. Combinatorics: counting, recurrence relations, generating functions.</p>
+<h3>Linear Algebra</h3>
+<p>Matrices, determinants, system of linear equations, eigenvalues and eigenvectors, LU decomposition.</p>
+<h3>Calculus</h3>
+<p>Limits, continuity and differentiability. Maxima and minima. Mean value theorem. Integration.</p>
+<h3>Probability and Statistics</h3>
+<p>Random variables. Uniform, normal, exponential, Poisson and binomial distributions. Mean, median, mode and standard deviation. Conditional probability and Bayes theorem.</p>
+</div>
+</div>
+
+<div class="syllabus-section">
+<div class="syllabus-section-title">Section 2: Digital Logic <span class="syllabus-badge core">Core CS</span></div>
+<div class="syllabus-content">
+<p>Boolean algebra. Combinational and sequential circuits. Minimization. Number representations and computer arithmetic (fixed and floating point).</p>
+</div>
+</div>
+
+<div class="syllabus-section">
+<div class="syllabus-section-title">Section 3: Computer Organization and Architecture <span class="syllabus-badge core">Core CS</span></div>
+<div class="syllabus-content">
+<p>Machine instructions and addressing modes. ALU, data‐path and control unit. Instruction pipelining, pipeline hazards. Memory hierarchy: cache, main memory and secondary storage; I/O interface (interrupt and DMA mode).</p>
+</div>
+</div>
+
+<div class="syllabus-section">
+<div class="syllabus-section-title">Section 4: Programming and Data Structures <span class="syllabus-badge core">Core CS</span></div>
+<div class="syllabus-content">
+<p>Programming in C. Recursion. Arrays, stacks, queues, linked lists, trees, binary search trees, binary heaps, graphs.</p>
+</div>
+</div>
+
+<div class="syllabus-section">
+<div class="syllabus-section-title">Section 5: Algorithms <span class="syllabus-badge core">Core CS</span></div>
+<div class="syllabus-content">
+<p>Searching, sorting, hashing. Asymptotic worst case time and space complexity. Algorithm design techniques: greedy, dynamic programming and divide‐and‐conquer. Graph traversals, minimum spanning trees, shortest paths.</p>
+</div>
+</div>
+
+<div class="syllabus-section">
+<div class="syllabus-section-title">Section 6: Theory of Computation <span class="syllabus-badge core">Core CS</span></div>
+<div class="syllabus-content">
+<p>Regular expressions and finite automata. Context-free grammars and push-down automata. Regular and context-free languages, pumping lemma. Turing machines and undecidability.</p>
+</div>
+</div>
+
+<div class="syllabus-section">
+<div class="syllabus-section-title">Section 7: Compiler Design <span class="syllabus-badge core">Core CS</span></div>
+<div class="syllabus-content">
+<p>Lexical analysis, parsing, syntax-directed translation. Runtime environments. Intermediate code generation. Local optimization. Data flow analyses: constant propagation, liveness analysis, common sub-expression elimination.</p>
+</div>
+</div>
+
+<div class="syllabus-section">
+<div class="syllabus-section-title">Section 8: Operating System <span class="syllabus-badge core">Core CS</span></div>
+<div class="syllabus-content">
+<p>System calls, processes, threads, inter‐process communication, concurrency and synchronization. Deadlock. CPU and I/O scheduling. Memory management and virtual memory. File systems.</p>
+</div>
+</div>
+
+<div class="syllabus-section">
+<div class="syllabus-section-title">Section 9: Databases <span class="syllabus-badge core">Core CS</span></div>
+<div class="syllabus-content">
+<p>ER‐model. Relational model: relational algebra, tuple calculus, SQL. Integrity constraints, normal forms. File organization, indexing (e.g., B and B+ trees). Transactions and concurrency control.</p>
+</div>
+</div>
+
+<div class="syllabus-section">
+<div class="syllabus-section-title">Section 10: Computer Networks <span class="syllabus-badge core">Core CS</span></div>
+<div class="syllabus-content">
+<p>Concept of layering: OSI and TCP/IP Protocol Stacks; Basics of packet, circuit and virtual circuit-switching; Data link layer: framing, error detection, Medium Access Control, Ethernet bridging; Routing protocols: shortest path, flooding, distance vector and link state routing; Fragmentation and IP addressing, IPv4, CIDR notation, Basics of IP support protocols (ARP, DHCP, ICMP), Network Address Translation (NAT); Transport layer: flow control and congestion control, UDP, TCP, sockets; Application layer protocols: DNS, SMTP, HTTP, FTP, Email.</p>
+</div>
+</div>
+
+<div class="syllabus-section">
+<div class="syllabus-section-title">General Aptitude <span class="syllabus-badge ga">GA — 15 Marks</span></div>
+<div class="syllabus-content">
+<h3>Verbal Aptitude</h3>
+<p>Basic English grammar: tenses, articles, adjectives, prepositions, conjunctions, verb-noun agreement, and other parts of speech. Basic vocabulary: words, idioms, and phrases in context. Reading and comprehension. Narrative sequencing.</p>
+<h3>Quantitative Aptitude</h3>
+<p>Data interpretation: data graphs (bar graphs, pie charts, and other graphs representing data), 2- and 3-dimensional plots, maps, and tables. Numerical computation and estimation: ratios, percentages, powers, exponents and logarithms, permutations and combinations, and series. Mensuration and geometry. Elementary statistics and probability.</p>
+<h3>Analytical Aptitude</h3>
+<p>Logic: deduction and induction. Analogy. Numerical relations and reasoning.</p>
+<h3>Spatial Aptitude</h3>
+<p>Transformation of shapes: translation, rotation, scaling, mirroring, assembling, and grouping. Paper folding, cutting, and patterns in 2 and 3 dimensions.</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<section id="page-resources" class="page-section">
+
+<!-- Resources -->
+<div class="sec-title">Recommended resources</div>
+<div class="resources">
+  <div class="res-card">
+    <div class="res-subject">DSA + Algorithms</div>
+    <div class="res-item"><strong>CLRS</strong> — reference for theory</div>
+    <div class="res-item"><strong>Goclasses / Apna College</strong> — video</div>
+    <div class="res-item"><strong>GateSmashers</strong> — PYQ focused</div>
+  </div>
+  <div class="res-card">
+    <div class="res-subject">Discrete Maths</div>
+    <div class="res-item"><strong>Kenneth Rosen</strong> — textbook</div>
+    <div class="res-item"><strong>Goclasses DM</strong> — best for GATE</div>
+    <div class="res-item"><strong>GATE PYQs (2010–25)</strong></div>
+  </div>
+  <div class="res-card">
+    <div class="res-subject">TOC</div>
+    <div class="res-item"><strong>Ullman / Sipser</strong> — reference</div>
+    <div class="res-item"><strong>Ravindrababu Ravula</strong> — YT</div>
+    <div class="res-item"><strong>Goclasses TOC</strong></div>
+  </div>
+  <div class="res-card">
+    <div class="res-subject">OS</div>
+    <div class="res-item"><strong>Galvin</strong> — textbook</div>
+    <div class="res-item"><strong>Goclasses OS</strong> — video</div>
+    <div class="res-item"><strong>GateSmashers OS</strong> — YT</div>
+  </div>
+  <div class="res-card">
+    <div class="res-subject">DBMS</div>
+    <div class="res-item"><strong>Ravindrababu Ravula</strong> — YT (best free)</div>
+    <div class="res-item"><strong>Goclasses DBMS</strong></div>
+    <div class="res-item"><strong>Korth</strong> — reference only</div>
+  </div>
+  <div class="res-card">
+    <div class="res-subject">Networks</div>
+    <div class="res-item"><strong>Forouzan</strong> — textbook</div>
+    <div class="res-item"><strong>GateSmashers CN</strong> — YT</div>
+    <div class="res-item"><strong>Goclasses CN</strong></div>
+  </div>
+  <div class="res-card">
+    <div class="res-subject">COA</div>
+    <div class="res-item"><strong>Hamacher / Tanenbaum</strong></div>
+    <div class="res-item"><strong>Goclasses COA</strong></div>
+    <div class="res-item"><strong>GateSmashers COA</strong> — YT</div>
+  </div>
+  <div class="res-card">
+    <div class="res-subject">Maths (LA + Prob)</div>
+    <div class="res-item"><strong>Gilbert Strang</strong> — Linear Algebra</div>
+    <div class="res-item"><strong>Goclasses Maths</strong></div>
+    <div class="res-item"><strong>Previous year papers</strong></div>
+  </div>
+  <div class="res-card">
+    <div class="res-subject">Mock tests</div>
+    <div class="res-item"><strong>Goclasses test series</strong> — best quality</div>
+    <div class="res-item"><strong>Made Easy test series</strong></div>
+    <div class="res-item"><strong>Official GATE PYQs</strong> — free</div>
+  </div>
+</div>
+
+<!-- Warning -->
+<div class="warning">
+  <div class="warning-title">Things that kill GATE prep — watch for these</div>
+  <ul>
+    <li>Studying a topic without solving PYQs for it immediately after — passive learning gives false confidence</li>
+    <li>Spending too much time on one subject and running out of time for others — stick to the monthly plan</li>
+    <li>Skipping mock analysis — taking mocks without analyzing them is the single biggest waste of prep time</li>
+    <li>Dropping aptitude because it "feels easy" — 15 marks of near-free marks is your baseline cushion</li>
+    <li>Comparing your mock scores to others online — irrelevant, demoralizing, and usually fake</li>
+    <li>Waiting to feel "ready" before starting mocks — start mocks in October even if you feel underprepared</li>
+    <li>Inconsistent sleep in the last month — your brain consolidates memory during sleep, not during study</li>
+  </ul>
+</div>
+
+<div style="background: var(--surface); border: 1px solid rgba(124,108,240,0.3); border-radius: 14px; padding: 24px; text-align: center;">
+  <div style="font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 8px;">You're 25 marks away from your goal.</div>
+  <div style="font-size: 14px; color: var(--muted); max-width: 500px; margin: 0 auto;">That's one subject well-studied per month. Not a dream — a plan. The only question is whether you show up every day.</div>
+</div>
+</section>
+
+<script>document.write('<scr'+'ipt src="tracker.js?t='+Date.now()+'"></scr'+'ipt>');</script>
+</body>
+</html>

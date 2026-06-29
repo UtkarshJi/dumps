@@ -1,0 +1,5 @@
+.vercel
+Books/
+*.lnk
+*.bat
+node_modules/
