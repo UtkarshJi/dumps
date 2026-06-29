@@ -531,6 +531,11 @@ function toggleTopic(el) {
   const overallPct = Math.round((totalDone / totalTopics) * 100);
   document.getElementById('overall-pct').textContent = overallPct + '%';
   document.getElementById('overall-fill').style.width = overallPct + '%';
+  
+  // Confetti celebration if a subject hits 100%
+  if (pct === 100 && el.checked) {
+    fireConfetti();
+  }
 }
 
 // --- Study heatmap ---
@@ -538,29 +543,40 @@ function renderHeatmap() {
   const d = getData();
   const grid = document.getElementById('hm-grid');
   grid.innerHTML = '';
+  // Convert standard hm-grid to hm-grid-v2 wrapper
+  grid.className = 'hm-grid-v2';
+  
   const tip = document.getElementById('hm-tip');
   const startDate = new Date('2026-06-01');
+  // Align start to previous Sunday for grid alignment
+  const firstDay = new Date(startDate);
+  firstDay.setDate(firstDay.getDate() - firstDay.getDay());
+  
   const endDate = new Date('2027-02-15');
   const todayStr = toIST();
   let streak = 0, totalHrs = 0;
 
-  // Calculate all dates
+  // Calculate all dates starting from the aligned first day
   const dates = [];
-  for (let dt = new Date(startDate); dt <= endDate; dt.setDate(dt.getDate() + 1)) {
+  for (let dt = new Date(firstDay); dt <= endDate; dt.setDate(dt.getDate() + 1)) {
     dates.push(new Date(dt));
   }
 
-  // Calculate total hours
-  dates.forEach(dt => {
+  // Calculate total hours (only within official start/end)
+  const actualDates = [];
+  for (let dt = new Date(startDate); dt <= endDate; dt.setDate(dt.getDate() + 1)) {
+    actualDates.push(new Date(dt));
+  }
+  actualDates.forEach(dt => {
     const key = toIST(dt);
     totalHrs += (d.hours[key] || 0);
   });
 
-  // Calculate streak (backwards from today, allow today to be in-progress)
+  // Calculate streak
   const checkDate = new Date();
   const todayKey = toIST(checkDate);
   if (!d.hours[todayKey] || d.hours[todayKey] <= 0) {
-    checkDate.setDate(checkDate.getDate() - 1); // start from yesterday if today not logged
+    checkDate.setDate(checkDate.getDate() - 1);
   }
   while (checkDate >= startDate) {
     const key = toIST(checkDate);
@@ -574,43 +590,86 @@ function renderHeatmap() {
   yesterdayDate.setDate(yesterdayDate.getDate() - 1);
   const yesterdayStr = toIST(yesterdayDate);
 
+  // Group into weeks
+  const weeks = [];
+  let currentWeek = [];
   dates.forEach(dt => {
-    const key = toIST(dt);
-    const isFuture = key > todayStr;
-    const isLocked = key < yesterdayStr; // before yesterday = locked
-    const hrs = d.hours[key] || 0;
-    const cell = document.createElement('div');
-    cell.className = 'hm-cell';
-    if (hrs >= 7) cell.classList.add('l4');
-    else if (hrs >= 5) cell.classList.add('l3');
-    else if (hrs >= 3) cell.classList.add('l2');
-    else if (hrs > 0) cell.classList.add('l1');
-    if (isFuture) { cell.style.opacity = '0.3'; cell.style.cursor = 'default'; }
-    if (isLocked) { cell.style.cursor = 'default'; }
+    currentWeek.push(new Date(dt));
+    if (currentWeek.length === 7) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+  });
+  if (currentWeek.length > 0) weeks.push(currentWeek);
 
-    cell.addEventListener('mouseenter', e => {
-      const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      tip.textContent = `${dayNames[dt.getDay()]}, ${key} — ${hrs}h`;
-      tip.style.display = 'block';
-      tip.style.left = e.clientX + 12 + 'px';
-      tip.style.top = e.clientY - 30 + 'px';
-    });
-    cell.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
-    cell.addEventListener('click', () => {
-      if (isFuture) return;
-      if (isLocked) { showToast('🔒 Can only edit today and yesterday'); return; }
-      const val = prompt(`Hours studied on ${key}:`, hrs || '');
-      if (val !== null && !isNaN(val)) {
-        d.hours[key] = parseFloat(val) || 0;
-        save(d);
-        renderHeatmap();
+  // Add day labels
+  const daysCol = document.createElement('div');
+  daysCol.className = 'hm-day-labels';
+  ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach((dName, i) => {
+    const span = document.createElement('span');
+    span.textContent = i % 2 === 0 ? '' : dName; // Show Mon, Wed, Fri
+    daysCol.appendChild(span);
+  });
+  grid.appendChild(daysCol);
+
+  // Add weeks
+  weeks.forEach(week => {
+    const weekCol = document.createElement('div');
+    weekCol.className = 'hm-week';
+    week.forEach(dt => {
+      const key = toIST(dt);
+      const isBeforeStart = dt < startDate;
+      const isFuture = key > todayStr;
+      const isLocked = key < yesterdayStr; 
+      const hrs = d.hours[key] || 0;
+      
+      const cell = document.createElement('div');
+      cell.className = 'hm-cell';
+      
+      if (isBeforeStart) {
+        cell.style.opacity = '0'; // Hidden placeholder
+        cell.style.pointerEvents = 'none';
+      } else {
+        if (hrs >= 7) cell.classList.add('l4');
+        else if (hrs >= 5) cell.classList.add('l3');
+        else if (hrs >= 3) cell.classList.add('l2');
+        else if (hrs > 0) cell.classList.add('l1');
+        
+        if (isFuture) { cell.style.opacity = '0.2'; cell.style.cursor = 'default'; }
+        if (isLocked) { cell.style.cursor = 'default'; }
+
+        cell.addEventListener('mouseenter', e => {
+          const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+          tip.textContent = `${dayNames[dt.getDay()]}, ${key} — ${hrs}h`;
+          tip.style.display = 'block';
+          tip.style.left = e.clientX + 12 + 'px';
+          tip.style.top = e.clientY - 30 + 'px';
+        });
+        cell.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+        cell.addEventListener('click', () => {
+          if (isFuture) return;
+          if (isLocked) { showToast('🔒 Can only edit today and yesterday'); return; }
+          const val = prompt(`Hours studied on ${key}:`, hrs || '');
+          if (val !== null && !isNaN(val)) {
+            d.hours[key] = parseFloat(val) || 0;
+            save(d);
+            renderHeatmap();
+          }
+        });
       }
+      weekCol.appendChild(cell);
     });
-    grid.appendChild(cell);
+    grid.appendChild(weekCol);
   });
 
   document.getElementById('hm-streak').textContent = streak;
   document.getElementById('hm-total').textContent = totalHrs.toFixed(1);
+  
+  // Trigger milestone if applicable on render (but only once per load)
+  if (!window._milestoneShown && streak > 0) {
+    checkMilestoneStreak(streak);
+    window._milestoneShown = true;
+  }
 }
 
 function logHours() {
@@ -726,6 +785,32 @@ function renderMockChart(mocks) {
   ctx.lineTo(pts[0].x, H - pad.b);
   ctx.closePath();
   ctx.fill();
+
+  // Trendline (Linear Regression)
+  if (mocks.length > 1) {
+    let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+    pts.forEach((p, i) => { sumX += i; sumY += p.score; sumXY += i * p.score; sumXX += i * i; });
+    const n = pts.length;
+    const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+
+    const startScore = intercept;
+    const endScore = intercept + slope * (n - 1);
+    const startY = pad.t + ch * (1 - startScore / maxScore);
+    const endY = pad.t + ch * (1 - endScore / maxScore);
+
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.setLineDash([2, 4]);
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(pts[0].x, startY); ctx.lineTo(pts[n-1].x, endY); ctx.stroke();
+    ctx.setLineDash([]);
+    
+    const projection = intercept + slope * n;
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.font = '10px Syne';
+    ctx.textAlign = 'right';
+    ctx.fillText(`Proj: ${projection.toFixed(1)}`, pts[n-1].x - 10, endY - 10);
+  }
 
   // Dots + labels
   pts.forEach(p => {
@@ -861,6 +946,12 @@ async function init() {
   checkForDataLoss();
   updateBackupStatus();
 
+  // Initialize theme
+  const savedTheme = localStorage.getItem('gate27_theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }
+
   // Try to restore previously connected backup file
   await restoreBackupHandle();
 
@@ -890,12 +981,6 @@ function showPage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   const tabs = document.querySelectorAll('.nav-tab');
   tabs.forEach(t => {
-    if (t.textContent.toLowerCase().replace(/\s+/g, '').includes(pageId.replace('studyplan','studyplan').replace('syllabus','fullsyllabus').replace('resources','resources'))) {
-      t.classList.add('active');
-    }
-  });
-  // Simpler: match by onclick attribute
-  tabs.forEach(t => {
     const onclick = t.getAttribute('onclick') || '';
     if (onclick.includes("'" + pageId + "'")) t.classList.add('active');
   });
@@ -920,3 +1005,179 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 // Redraw mock chart on resize
 window.addEventListener('resize', () => { const d = getData(); renderMockChart(d.mocks); });
+
+// --- V2 Features ---
+
+// Theme Toggle
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('gate27_theme', next);
+}
+
+// Keyboard Shortcuts
+document.addEventListener('keydown', (e) => {
+  // Ignore if inside input/textarea
+  if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+  
+  switch(e.key.toLowerCase()) {
+    case '1': showPage('dashboard'); break;
+    case '2': showPage('studyplan'); break;
+    case '3': showPage('analytics'); break;
+    case '4': showPage('syllabus'); break;
+    case '5': showPage('resources'); break;
+    case 't': toggleTimerPanel(); break;
+    case 'l': 
+      if (document.getElementById('hm-hrs')) document.getElementById('hm-hrs').focus();
+      break;
+    case 'n': 
+      if (document.getElementById('mk-score')) {
+        showPage('analytics');
+        setTimeout(() => document.getElementById('mk-score').focus(), 100);
+      }
+      break;
+    case '?': 
+      document.getElementById('kbd-overlay').classList.add('show');
+      break;
+    case 'escape':
+      document.getElementById('kbd-overlay').classList.remove('show');
+      document.getElementById('timer-panel').classList.remove('open');
+      break;
+  }
+});
+
+function closeKbd(e) {
+  if (e.target.id === 'kbd-overlay') {
+    e.target.classList.remove('show');
+  }
+}
+
+// Confetti
+function fireConfetti() {
+  if (typeof window.confetti === 'function') {
+    var duration = 3 * 1000;
+    var end = Date.now() + duration;
+    (function frame() {
+      window.confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: ['#7c6cf0', '#22d3a0', '#f0a832']
+      });
+      window.confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: ['#7c6cf0', '#22d3a0', '#f0a832']
+      });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    }());
+  }
+}
+
+// Milestone Toast
+function checkMilestoneStreak(streak) {
+  const milestones = [7, 14, 30, 50, 100, 200];
+  if (milestones.includes(streak)) {
+    const toast = document.getElementById('milestone-toast');
+    document.getElementById('mt-text').textContent = `${streak} Day Streak!`;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 5000);
+  }
+}
+
+// Study Timer
+let timerInterval = null;
+let timerSeconds = 0;
+let timerMode = 'stopwatch'; // or 'pomodoro'
+let pomodoroSession = 1;
+const POMODORO_WORK = 25 * 60;
+const POMODORO_BREAK = 5 * 60;
+
+function toggleTimerPanel() {
+  document.getElementById('timer-panel').classList.toggle('open');
+}
+
+function setTimerMode(mode) {
+  timerMode = mode;
+  document.getElementById('tm-stopwatch').classList.toggle('active', mode === 'stopwatch');
+  document.getElementById('tm-pomodoro').classList.toggle('active', mode === 'pomodoro');
+  resetTimer();
+}
+
+function updateTimerDisplay() {
+  let displaySecs = timerSeconds;
+  if (timerMode === 'pomodoro') {
+    const isBreak = pomodoroSession % 2 === 0;
+    const target = isBreak ? POMODORO_BREAK : POMODORO_WORK;
+    displaySecs = Math.max(0, target - timerSeconds);
+    document.getElementById('timer-session').textContent = isBreak ? 'Break Time ☕' : 'Focus Session 🧠';
+  } else {
+    document.getElementById('timer-session').textContent = 'Stopwatch Mode';
+  }
+  
+  const m = Math.floor(displaySecs / 60).toString().padStart(2, '0');
+  const s = (displaySecs % 60).toString().padStart(2, '0');
+  document.getElementById('timer-display').textContent = `${m}:${s}`;
+}
+
+function startTimer() {
+  if (timerInterval) return;
+  document.getElementById('timer-btn-start').style.display = 'none';
+  document.getElementById('timer-btn-pause').style.display = 'block';
+  document.getElementById('timer-trigger').classList.add('active');
+  document.getElementById('timer-display').classList.add('running');
+  
+  timerInterval = setInterval(() => {
+    timerSeconds++;
+    updateTimerDisplay();
+    
+    // Auto-stop pomodoro
+    if (timerMode === 'pomodoro') {
+      const isBreak = pomodoroSession % 2 === 0;
+      const target = isBreak ? POMODORO_BREAK : POMODORO_WORK;
+      if (timerSeconds >= target) {
+        pauseTimer();
+        pomodoroSession++;
+        timerSeconds = 0;
+        updateTimerDisplay();
+        alert(isBreak ? 'Break over! Ready to focus?' : 'Focus session complete! Take a break.');
+      }
+    }
+  }, 1000);
+}
+
+function pauseTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  document.getElementById('timer-btn-start').style.display = 'block';
+  document.getElementById('timer-btn-pause').style.display = 'none';
+  document.getElementById('timer-trigger').classList.remove('active');
+  document.getElementById('timer-display').classList.remove('running');
+}
+
+function resetTimer() {
+  pauseTimer();
+  // If we had a lot of time, maybe auto-log it?
+  if (timerMode === 'stopwatch' && timerSeconds > 300) {
+    const hours = (timerSeconds / 3600).toFixed(1);
+    if (confirm(`Log ${hours} hours to today's study heatmap?`)) {
+      const d = getData();
+      const today = toIST();
+      d.hours[today] = (d.hours[today] || 0) + parseFloat(hours);
+      save(d);
+      renderHeatmap();
+      showToast(`Logged ${hours}h from timer`);
+    }
+  }
+  timerSeconds = 0;
+  pomodoroSession = 1;
+  updateTimerDisplay();
+}
+
+// Call initially
+updateTimerDisplay();
+
